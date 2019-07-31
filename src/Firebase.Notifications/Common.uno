@@ -12,31 +12,43 @@ namespace Firebase.Notifications
     [Require("Entity","Firebase.Core.Init()")]
     [ForeignInclude(Language.Java,
             "android.util.Log",
-            "com.google.firebase.iid.FirebaseInstanceId")]
+            "com.google.firebase.iid.FirebaseInstanceId",
+            "com.google.firebase.messaging.FirebaseMessaging")]
     [extern(iOS) Require("Source.Include", "Firebase/Firebase.h")]
     public static class NotificationService
     {
-        extern(!Android)
-        static NotificationService()
+        extern(!iOS && !Android)
+        public static void Init()
         {
             OnRegistrationFailed(null, "Firebase Notifications are not yet available on this platform");
         }
 
         extern(Android)
-        static NotificationService()
+        public static void Init()
         {
-            // Firebase.Core.Init();
+            Firebase.Core.Init();
             AndroidImpl.ReceivedNotification += OnReceived;
             AndroidImpl.RegistrationFailed += OnRegistrationFailed;
             AndroidImpl.RegistrationSucceeded += OnRegistrationSucceeded;
             AndroidImpl.Init();
         }
 
+        extern(iOS)
+        public static void Init()
+        {
+            Firebase.Core.Init();
+            iOSImpl.ReceivedNotification += OnReceived;
+            iOSImpl.NotificationRegistrationFailed += OnRegistrationFailed;
+            iOSImpl.NotificationRegistrationSucceeded += OnRegistrationSucceeded;
+            iOSImpl.Init();
+        }
+
         public static void OnReceived(object sender, KeyValuePair<string,bool> notification)
         {
             var x = _receivedNotification;
-            if (x!=null)
+            if (x!=null){
                 x(null, notification);
+            }
             else
                 _pendingNotifications.Add(notification);
         }
@@ -45,9 +57,7 @@ namespace Firebase.Notifications
         {
             var x = _registrationFailed;
             if (x!=null)
-            {
                 x(null, message);
-            }
             else
             {
                 _pendingSuccess = null;
@@ -59,9 +69,7 @@ namespace Firebase.Notifications
         {
             var x = _registrationSucceeded;
             if (x!=null)
-            {
                 x(null, message);
-            }
             else
             {
                 _pendingFailure = null;
@@ -82,7 +90,9 @@ namespace Firebase.Notifications
             {
                 _receivedNotification += value;
                 foreach (var n in _pendingNotifications)
+                {
                     value(null, n);
+                }
                 _pendingNotifications.Clear();
             }
             remove {
@@ -99,9 +109,7 @@ namespace Firebase.Notifications
             {
                 _registrationSucceeded += value;
                 if (_pendingSuccess!=null)
-                {
                     value(null, _pendingSuccess);
-                }
             }
             remove {
                 _registrationSucceeded -= value;
@@ -114,9 +122,7 @@ namespace Firebase.Notifications
             {
                 _registrationFailed += value;
                 if (_pendingFailure!=null)
-                {
                     value(null, _pendingFailure);
-                }
             }
             remove {
                 _registrationFailed -= value;
@@ -126,7 +132,7 @@ namespace Firebase.Notifications
         [Foreign(Language.ObjC)]
         public extern(iOS) static void ClearBadgeNumber()
         @{
-            // [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+            [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
         @}
 
         public extern(!iOS) static void ClearBadgeNumber() { }
@@ -134,8 +140,7 @@ namespace Firebase.Notifications
         [Foreign(Language.ObjC)]
         public extern(iOS) static void ClearAllNotifications()
         @{
-            // [UIApplication sharedApplication].applicationIconBadgeNumber = 1;
-            // [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+            [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
         @}
 
         [Foreign(Language.Java)]
@@ -151,7 +156,7 @@ namespace Firebase.Notifications
         [Foreign(Language.ObjC)]
         public extern(iOS) static String GetFCMToken()
         @{
-            NSString *fcmToken = [[FIRInstanceID instanceID] token];
+            NSString *fcmToken = [[FIRMessaging messaging] FCMToken];
             return fcmToken;
         @}
 
@@ -165,6 +170,32 @@ namespace Firebase.Notifications
 
         public extern(!iOS && !Android) static String GetFCMToken() { return ""; }
 
+        [Foreign(Language.ObjC)]
+        public extern(iOS) static void SubscribeToTopic(string topicName)
+        @{
+            [[FIRMessaging messaging] subscribeToTopic:topicName];
+        @}
 
+        [Foreign(Language.Java)]
+        public extern(Android) static void SubscribeToTopic(string topicName)
+        @{
+            FirebaseMessaging.getInstance().subscribeToTopic(topicName);
+        @}
+
+        public extern(!iOS && !Android) static void SubscribeToTopic(string topicName) {}
+
+        [Foreign(Language.ObjC)]
+        public extern(iOS) static void UnsubscribeFromTopic(string topicName)
+        @{
+            [[FIRMessaging messaging] unsubscribeFromTopic:topicName];
+        @}
+
+        [Foreign(Language.Java)]
+        public extern(Android) static void UnsubscribeFromTopic(string topicName)
+        @{
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(topicName);
+        @}
+
+        public extern(!iOS && !Android) static void UnsubscribeFromTopic(string topicName) {}
     }
 }

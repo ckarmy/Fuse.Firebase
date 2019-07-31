@@ -20,7 +20,7 @@ namespace Firebase.Authentication
                     "com.google.firebase.auth.AuthResult",
                     "com.google.firebase.auth.FirebaseAuth",
                     "com.google.firebase.auth.FirebaseUser")]
-    [Require("Gradle.Dependency.Compile", "com.google.firebase:firebase-auth:12.0.1")]
+    [Require("Gradle.Dependency.Implementation", "com.google.firebase:firebase-auth:16.0.5")]
     [Require("AppDelegate.SourceFile.Declaration", "#include <@{Firebase.Authentication.AuthService:Include}>")]
     [extern(iOS) Require("Source.Include", "Firebase/Firebase.h")]
     [extern(iOS) Require("Source.Include", "FirebaseAuth/FirebaseAuth.h")]

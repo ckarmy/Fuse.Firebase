@@ -23,7 +23,7 @@ namespace Firebase.Notifications
                     "android.os.Bundle",
                     "com.fuse.firebase.Notifications.PushNotificationReceiver",
                     "com.google.firebase.messaging.RemoteMessage")]
-    [Require("Gradle.Dependency.Compile", "com.google.firebase:firebase-messaging:12.0.1")]
+    [Require("Gradle.Dependency.Implementation", "com.google.firebase:firebase-messaging:17.3.4")]
     extern(Android)
     internal class AndroidImpl
     {

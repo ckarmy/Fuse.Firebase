@@ -17,7 +17,7 @@ namespace Firebase.Storage
         "com.google.firebase.storage.StorageReference",
         "com.google.firebase.storage.UploadTask")]
     [Require("Cocoapods.Podfile.Target", "pod 'Firebase/Storage'")]
-    [Require("Gradle.Dependency.Compile", "com.google.firebase:firebase-storage:12.0.1")]
+    [Require("Gradle.Dependency.Implementation", "com.google.firebase:firebase-storage:16.1.0")]
     [extern(iOS) Require("Source.Import","FirebaseStorage/FirebaseStorage.h")]
     extern(mobile)
     static class StorageService
@@ -130,7 +130,7 @@ namespace Firebase.Storage
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    @{Upload:Of(_this).Resolve(string):Call(taskSnapshot.getDownloadUrl().toString())};
+                    @{Upload:Of(_this).Resolve(string):Call(taskSnapshot.getStorage().getDownloadUrl().toString())};
                 }
             });
         @}

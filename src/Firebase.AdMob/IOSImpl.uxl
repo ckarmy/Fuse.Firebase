@@ -1,0 +1,6 @@
+<Extensions Backend="CPlusPlus" Condition="iOS">
+    <Require Xcode.Plist.Element><![CDATA[
+<key>GADIsAdManagerApp</key>
+<true/>
+]]></Require>
+</Extensions>

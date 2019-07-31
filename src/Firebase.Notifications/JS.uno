@@ -1,6 +1,7 @@
 using Uno;
 using Uno.UX;
 using Uno.Platform;
+using Uno.Threading;
 using Uno.Collections;
 using Uno.Compiler.ExportTargetInterop;
 using Fuse;
@@ -26,8 +27,17 @@ namespace Firebase.Notifications
     public sealed class NotificationModule : NativeEventEmitterModule
     {
         static readonly NotificationModule _instance;
-        readonly iOSImpl _iOSImpl;
+        extern(iOS) readonly iOSImpl _iOSImpl;
         static NativeEvent _onRegistrationSucceedediOS;
+
+        static NativeEvent onReceivedMessage;
+        static NativeEvent onRegistrationFailed;
+        static NativeEvent onRegistrationSucceeded;
+
+        static NotificationModule()
+        {
+            NotificationService.Init();
+        }
 
         public NotificationModule()
             : base(true,
@@ -37,13 +47,11 @@ namespace Firebase.Notifications
             if (_instance != null) return;
             Resource.SetGlobalKey(_instance = this, "Firebase/Notifications");
 
-            _iOSImpl = new iOSImpl();
+            onReceivedMessage = new NativeEvent("onReceivedMessage");
+            onRegistrationFailed = new NativeEvent("onRegistrationFailed");
+            onRegistrationSucceeded = new NativeEvent("onRegistrationSucceeded");
 
             // Old-style events for backwards compatibility
-            var onReceivedMessage = new NativeEvent("onReceivedMessage");
-            var onRegistrationFailed = new NativeEvent("onRegistrationFailed");
-            var onRegistrationSucceeded = new NativeEvent("onRegistrationSucceeded");
-
             On("receivedMessage", onReceivedMessage);
             // Note: If we decide to remove these old-style events in the future, the
             // "error" event will no longer have a listener by default, meaning that the
@@ -60,6 +68,9 @@ namespace Firebase.Notifications
             AddMember(new NativeFunction("clearBadgeNumber", ClearBadgeNumber));
             AddMember(new NativeFunction("clearAllNotifications", ClearAllNotifications));
             AddMember(new NativeFunction("getFCMToken", GetFCMToken));
+            AddMember(new NativeFunction("subscribeToTopic", SubscribeToTopic));
+            AddMember(new NativeFunction("unsubscribeFromTopic", UnsubscribeFromTopic));
+
             _onRegistrationSucceedediOS = new NativeEvent("onRegistrationSucceedediOS");
             AddMember(_onRegistrationSucceedediOS);
 
@@ -91,8 +102,7 @@ namespace Firebase.Notifications
         }
 
         static void OnRegistrationSucceedediOS(string message) {
-               //_onRegistrationSucceedediOS.RaiseAsync(message);
-               // App is getting crash sometimes at this function and now we are getting FCM token via GetFCMToken(), so we can put it in comment
+             _onRegistrationSucceedediOS.RaiseAsync(message);
         }
 
         /**
@@ -136,6 +146,30 @@ namespace Firebase.Notifications
             if (token != null) {
                 Emit("registrationSucceeded", token);
             }
+            return null;
+        }
+
+        /**
+           @scriptmethod subscribeToTopic
+
+           Subscribes to topic in the background.
+        */
+        public object SubscribeToTopic(Context context, object[] args)
+        {
+            var topicName = (string)args[0];
+            Firebase.Notifications.NotificationService.SubscribeToTopic(topicName);
+            return null;
+        }
+
+        /**
+           @scriptmethod unsubscribeFromTopic
+
+           Unsubscribes from topic in the background.
+        */
+        public object UnsubscribeFromTopic(Context context, object[] args)
+        {
+            var topicName = (string)args[0];
+            Firebase.Notifications.NotificationService.UnsubscribeFromTopic(topicName);
             return null;
         }
     }

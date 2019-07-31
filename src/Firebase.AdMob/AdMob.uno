@@ -12,7 +12,7 @@ using Uno.Threading;
 namespace Firebase.AdMob
 {
 
-    [Require("Cocoapods.Podfile.Target", "pod 'Firebase/AdMob'")]
+    [Require("Cocoapods.Podfile.Target", "pod 'Google-Mobile-Ads-SDK'")]
     extern(mobile)
     internal static class AdMobService
     {

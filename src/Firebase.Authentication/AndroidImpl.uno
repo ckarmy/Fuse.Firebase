@@ -106,7 +106,7 @@ namespace Firebase.Authentication
         public GetToken()
         @{
             final FirebaseUser user = (FirebaseUser)@{User.GetCurrent():Call()};
-            user.getToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+            user.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                     public void onComplete(Task<GetTokenResult> task)
                     {
                         if (task.isSuccessful()) {

@@ -30,8 +30,8 @@ namespace Firebase.Authentication.Google
                     "com.google.firebase.auth.FirebaseAuth",
                     "com.google.firebase.auth.FirebaseUser",
                     "com.google.firebase.auth.GoogleAuthProvider")]
-    [Require("Gradle.Dependency.Compile", "com.google.firebase:firebase-auth:12.0.1")]
-    [Require("Gradle.Dependency.Compile", "com.google.android.gms:play-services-auth:12.0.1")]
+    [Require("Gradle.Dependency.Implementation", "com.google.firebase:firebase-auth:16.0.5")]
+    [Require("Gradle.Dependency.Implementation", "com.google.android.gms:play-services-auth:16.0.1")]
     [Require("Cocoapods.Podfile.Target", "pod 'GoogleSignIn'")]
     [Require("AppDelegate.HeaderFile.Declaration", "#include <GoogleSignIn/GoogleSignIn.h>")]
     [Require("AppDelegate.SourceFile.Declaration", "#include <GoogleSignIn/GoogleSignIn.h>")]

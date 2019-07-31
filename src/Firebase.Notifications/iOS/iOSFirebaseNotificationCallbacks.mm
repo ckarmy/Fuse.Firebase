@@ -2,14 +2,16 @@
 #include <@{Firebase.Notifications.NotificationModule:Include}>
 #include <@{ObjC.Object:Include}>
 #include <uObjC.Foreign.h>
+@{Firebase.Notifications.iOSImpl:IncludeDirective}
 
 @implementation FireNotificationCallbacks : NSObject
 
 
 - (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken {
-    NSLog(@"FCM registration token: %@", fcmToken);
-
-    @{Firebase.Notifications.NotificationModule.OnRegistrationSucceedediOS(string):Call(fcmToken)};
+    @{Firebase.Notifications.iOSImpl.OnNotificationRegistrationSucceeded(string):Call(fcmToken)};
+}
+- (void)messaging:(nonnull FIRMessaging *)messaging
+    didReceiveMessage:(nonnull FIRMessagingRemoteMessage *)remoteMessage{
 }
 
 @end
