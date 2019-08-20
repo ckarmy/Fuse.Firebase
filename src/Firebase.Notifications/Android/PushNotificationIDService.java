@@ -9,6 +9,6 @@ public class PushNotificationIDService extends FirebaseInstanceIdService
     public void onTokenRefresh()
     {
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        com.foreign.Firebase.Notifications.AndroidImpl.RegistrationIDUpdated(refreshedToken);
+        com.foreign.Firebase.NotificationsImpl.RegistrationIDUpdated(refreshedToken);
     }
 }

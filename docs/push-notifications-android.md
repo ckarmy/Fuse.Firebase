@@ -19,7 +19,7 @@ Include the Fuse push notification library by adding the following to your `.uno
 
 ```json
 "Projects": [
-    "../src/Firebase.Notifications.Android/Firebase.Notifications.unoproj"
+    "../src/Firebase.Notifications/Firebase.Notifications.unoproj"
 ]
 ```
 
@@ -35,7 +35,7 @@ Finally add you `google-services.json` file from firebase to the same directory 
 
 ## How this behaves in your app
 
-Referencing `Firebase.Notifications.Android` will do the the following:
+Referencing `Firebase.Notifications` will do the the following:
 
 - You get a callback telling you if the registration succeeded or failed.
 - The succeeded callback will contain your unique registration id
@@ -236,7 +236,7 @@ Besides this you are also allowed to specify a 'Large Icon' which `reinforce[s] 
 }
 ```
 
-On receiving this message, `Firebase.Notifications.Android` will attempt to load the icon from the android [R](https://developer.android.com/reference/android/R.html) class or as a `BundledFile`. If this fails it will log the issue but will not throw an exception, this is so that your user won't get a spurious error message when your app isn't running. To include an icon for the above message you add something like the following to your `unoproj`:
+On receiving this message, `Firebase.Notifications` will attempt to load the icon from the android [R](https://developer.android.com/reference/android/R.html) class or as a `BundledFile`. If this fails it will log the issue but will not throw an exception, this is so that your user won't get a spurious error message when your app isn't running. To include an icon for the above message you add something like the following to your `unoproj`:
 
 ```json
 "Includes": [
