@@ -19,7 +19,7 @@ Include the Fuse push notification library by adding the following to your `.uno
 
 ```json
 "Projects": [
-    "../src/Firebase.Notifications.Android/Firebase.Notifications.Android.unoproj"
+    "../src/Firebase.Notifications.Android/Firebase.Notifications.unoproj"
 ]
 ```
 
