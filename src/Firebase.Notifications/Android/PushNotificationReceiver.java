@@ -174,7 +174,7 @@ public class PushNotificationReceiver extends FirebaseMessagingService
         }
         else
         {
-            com.foreign.Firebase.NotificationsImpl.OnRecieve2(ToJsonString(remoteMessage), false);
+            com.foreign.Firebase.Notifications.AndroidImpl.OnRecieve2(ToJsonString(remoteMessage), false);
         }
     }
 
