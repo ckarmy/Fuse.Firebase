@@ -27,6 +27,7 @@ namespace Firebase
         [Foreign(Language.ObjC)]
         static public void Init()
         {
+            @Override
             @{
                 if ([FIRApp defaultApp] == nil) {
                     NSLog(@"Firebase Configuring...");
