@@ -87,7 +87,7 @@ namespace Firebase.Notifications
         }
 
         // NOTE: We dont clean the _pendingSuccess or _pendingFailure fields
-        //       As each consumer of PushNotifications will need to know these details.
+        // As each consumer of PushNotifications will need to know these details.
 
         internal static event EventHandler<string> RegistrationSucceeded
         {
